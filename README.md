@@ -1,4 +1,4 @@
-# Displaying CPU Temperature in Proxmox Summery in Real Time
+# Displaying CPU Temperature in Proxmox Summary in Real Time
 
 !["Dashboard Screenshot"](https://github.com/AlessandroPerazzetta/proxmox-temperature-stats/blob/main/screenshot.png?raw=true)
 
