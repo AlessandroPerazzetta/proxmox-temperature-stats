@@ -30,7 +30,7 @@ Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu
    
     `vi /usr/share/perl5/PVE/API2/Nodes.pm`
    
-    Next, you can press F6 to search for my $dinfo and press Enter
+    Next, you can search for my $dinfo and press Enter
    
     The code should look like this:
    
