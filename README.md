@@ -26,9 +26,9 @@ Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu
 
 2) Adding the output of sensors to information
    
-    Here we will use Nano to edit some files. In your shell, type the following:
+    Here we will edit some files. In your shell, type the following:
    
-    `nano /usr/share/perl5/PVE/API2/Nodes.pm`
+    `vi /usr/share/perl5/PVE/API2/Nodes.pm`
    
     Next, you can press F6 to search for my $dinfo and press Enter
    
@@ -50,17 +50,17 @@ Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu
        
             my $dinfo = df('/', 1);     # output is bytes
    
-    Now press Ctrl+O to save and Ctrl+X to exit.
+    Now save and exit.
 
 3) Making space for the new information
    
-    Next we will need to edit another file, So once again we will use Nano
+    Next we will need to edit another file
    
     Type the following command into your shell:
    
-    `nano /usr/share/pve-manager/js/pvemanagerlib.js`
+    `vi /usr/share/pve-manager/js/pvemanagerlib.js`
    
-    Once in press F6 to search for my widget.pveNodeStatus and press Enter
+    Once in press search for my widget.pveNodeStatus and press Enter
    
     You will get a snippit of code that looks like this:
    
@@ -89,7 +89,7 @@ Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu
 
 4) Final part to edit
    
-    Ok so you know the drill by now search for PVE Manager Version and press Enter
+    Now search for PVE Manager Version and press Enter
    
     You will see a section of code like this:
    
