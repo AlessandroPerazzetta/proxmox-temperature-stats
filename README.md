@@ -1,4 +1,4 @@
-# Displaying CPU Temperature in Proxmox Summery in Real Time
+# Displaying CPU Temperature in Proxmox Summary in Real Time
 
 !["Dashboard Screenshot"](https://github.com/AlessandroPerazzetta/proxmox-temperature-stats/blob/main/screenshot.png?raw=true)
 
@@ -151,5 +151,10 @@ Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu
     To do this you will have to type in the following command:
    
     `systemctl restart pveproxy`
+   <<<<<<< HEAD
+   
+   =======
    
     If you got kicked out of the shell or it froze, dont worry this is normal! As the final step, either refresh your webpage with F5 or ideally close you browser and open proxmox again.
+   
+   > > > > > > > e4ecc09b5f20e27581848cbdae242c7791c5472b
