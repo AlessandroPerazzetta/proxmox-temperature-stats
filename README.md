@@ -1,8 +1,21 @@
 # Displaying CPU Temperature in Proxmox Summary in Real Time
 
-!["Dashboard Screenshot"](https://github.com/AlessandroPerazzetta/proxmox-temperature-stats/blob/main/screenshot.png?raw=true)
+### Standard
+!["Dashboard Screenshot"](https://github.com/AlessandroPerazzetta/proxmox-temperature-stats/blob/main/screenshot_standard.png?raw=true)
 
-Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu_temperature_in_proxmox_summery_in/)
+### JSON
+!["Dashboard Screenshot"](https://github.com/AlessandroPerazzetta/proxmox-temperature-stats/blob/main/screenshot_json.png?raw=true)
+
+
+## Script automated installation
+
+### Standard
+wget -O - https://raw.githubusercontent.com/AlessandroPerazzetta/proxmox-temperature-stats/main/pve_thermal_standard.sh | bash
+
+### JSON
+wget -O - https://raw.githubusercontent.com/AlessandroPerazzetta/proxmox-temperature-stats/main/pve_thermal_json.sh | bash
+
+## Manual installation
 
 1) Lets install lm-sensors to show us the information we need. Type the following in the proxmox shell
    
@@ -51,6 +64,20 @@ Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu
             my $dinfo = df('/', 1);     # output is bytes
    
     Now save and exit.
+
+    ### STANDARD version
+
+    Add no parameters to have standard output format:
+    
+        $res->{thermalstate} = `sensors`;
+
+    ### JSON version
+
+    Add parameters to have JSON output format:
+    
+        $res->{thermalstate} = `sensors -jA`;
+
+
 
 3) Making space for the new information
    
@@ -146,10 +173,57 @@ Source: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu
    
     Now we can finally save and exit.
 
-5) Restart the summery page
+    ### STANDARD version
+
+            {
+                itemId: 'thermal',
+                colspan: 2,
+                printBar: false,
+                title: gettext('CPU Thermal State'),
+                textField: 'thermalstate',
+                renderer:function(value){
+                    const c0 = value.match(/Core 0.*?\+([\d\.]+)Â/)[1];
+                    const c1 = value.match(/Core 1.*?\+([\d\.]+)Â/)[1];
+                    const c2 = value.match(/Core 2.*?\+([\d\.]+)Â/)[1];
+                    const c3 = value.match(/Core 3.*?\+([\d\.]+)Â/)[1];
+                    return `Core 0: ${c0} ℃ | Core 1: ${c1} ℃ | Core 2: ${c2} ℃ | Core 3: ${c3} ℃`
+                }
+            }
+
+    ### JSON version
+            {
+                itemId: 'thermals',
+                colspan: 2,
+                printBar: false,
+                title: gettext('Thermals'),
+                textField: 'thermalstate',
+                renderer:function(value){
+                    let result = [];
+                    const sensors = JSON.parse(value);
+                    Object.entries(sensors).forEach(([sensor, temps]) => {
+                        let sensorTemps = [];
+                        Object.entries(temps).forEach(([name, temp]) => {
+                            Object.entries(temp).forEach(([key, val]) => {
+                                if(key.includes('_input')){
+                                    sensorTemps.push(name + ': ' + val + ' °C');
+                                }
+                            });
+                        });
+                        result.push(sensor + ' ' + sensorTemps.join(' | '))
+                    });
+                    return result.join('<br>');
+                }
+            }
+
+
+
+5) Restart pve manager and refresh summary page
    
     To do this you will have to type in the following command:
    
     `systemctl restart pveproxy`
    
     If you got kicked out of the shell or it froze, dont worry this is normal! As the final step, either refresh your webpage with F5 or ideally close you browser and open proxmox again.
+
+
+Credits: [Reddit](https://www.reddit.com/r/homelab/comments/rhq56e/displaying_cpu_temperature_in_proxmox_summery_in/)
